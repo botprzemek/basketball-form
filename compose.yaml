@@ -1,0 +1,40 @@
+networks:
+  basketball:
+    name: basketball
+    driver: bridge
+  database:
+    name: basketball-database
+
+volumes:
+  database:
+    name: basketball-database
+
+services:
+  database:
+    image: "cockroachdb/cockroach:latest-v23.2"
+    container_name: basketball-database
+    networks:
+      - database
+    volumes:
+      - database:/cockroach/cockroach-data
+    command: start --insecure --join=database
+
+  init-database:
+    image: "cockroachdb/cockroach:latest-v23.2"
+    networks:
+      - database
+    command: init --insecure --host=database
+    depends_on:
+      - database
+
+  app:
+    image: basketball/app:0.1.0
+    build: ./app
+    container_name: basketball-app
+    environment:
+      NUXT_APP_BASE_URL: "/"
+    networks:
+      basketball:
+    depends_on:
+      database:
+        condition: service_started

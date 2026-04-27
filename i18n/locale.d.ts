@@ -1,4 +1,4 @@
-type Component = Record<string, string | Component>;
+type Component = Record<string, Component>;
 
 type Page = {
     title: string;

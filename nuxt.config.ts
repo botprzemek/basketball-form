@@ -1,72 +1,69 @@
+import tailwindcss from "@tailwindcss/vite";
+
+// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    compatibilityDate: "2024-11-01",
-    srcDir: "src/",
+    compatibilityDate: "2025-07-15",
     devtools: {
         enabled: true,
         timeline: {
-            enabled: true
-        }
+            enabled: true,
+        },
     },
-    modules: [
-        "@nuxtjs/seo",
-        "@nuxtjs/i18n",
-        "@nuxtjs/tailwindcss",
-        "@nuxt/eslint",
-        "@nuxt/test-utils/module",
-        "@nuxt/image"
-    ],
+
+    modules: ["@nuxtjs/seo", "@nuxtjs/i18n", "@nuxt/image"],
+
     runtimeConfig: {
         database: "postgresql://user:password@host:5432/postgres",
         token: "your-secret-token",
         public: {
             author: "notbyte.com",
             name: "3X3",
-            url: "https://3x3.notbyte.com/"
-        }
+            url: "https://3x3.notbyte.com/",
+        },
     },
+
     app: {
-        rootAttrs: {
-            id: "notbyte-root"
-        },
         rootTag: "body",
-        teleportAttrs: {
-            id: "notbyte-teleports"
+        rootAttrs: {
+            id: "basketball-root",
         },
+
         teleportTag: "aside",
+        teleportAttrs: {
+            id: "basketball-teleports",
+        },
+
         pageTransition: {
             name: "page",
-            mode: "out-in"
-        }
+            mode: "out-in",
+        },
     },
+
+    ogImage: { zeroRuntime: true },
+
+    css: ["./app/assets/css/main.css"],
+    vite: {
+        plugins: [tailwindcss()],
+    },
+
     i18n: {
         baseUrl: process.env.NUXT_PUBLIC_URL,
-        bundle: {
-            optimizeTranslationDirective: false
-        },
         customRoutes: "page",
         defaultLocale: "pl",
+        strategy: "prefix_except_default",
         detectBrowserLanguage: {
             useCookie: true,
-            cookieKey: "notbyte-lang",
-            redirectOn: "root"
+            cookieKey: "basketball-lang",
+            redirectOn: "root",
         },
+
         locales: [
             {
                 code: "pl",
                 name: "Polski",
                 language: "pl-PL",
-                file: "pl-PL.ts"
-            }
+                file: "pl-PL.ts",
+            },
         ],
-        strategy: "prefix_except_default"
     },
-    // TESTING
-    nitro: {
-        storage: {
-            db: {
-                driver: "fs",
-                base: "./.data/db"
-            }
-        }
-    }
 });

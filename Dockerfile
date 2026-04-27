@@ -1,31 +1,23 @@
-# Build a production distribution
-
 FROM cgr.dev/chainguard/node:latest AS builder
 
 WORKDIR /app
 
-COPY --chown=node:node package*.json .
+COPY --chown=nonroot:nonroot package.json package-lock.json ./
+RUN npm ci
 
-RUN npm install --clean
-
-COPY --chown=node:node . .
-
+COPY --chown=nonroot:nonroot . .
 RUN npm run build
 
-# Run output in a clean environment
-
-FROM alpine AS runner
+FROM cgr.dev/chainguard/node:latest
 
 WORKDIR /app
 
-LABEL authors="botprzemek"
+ENV NODE_ENV=production
+ENV NITRO_HOST=0.0.0.0
+ENV NITRO_PORT=3000
 
-RUN apk add --update nodejs
-
-COPY --from=builder --chown=node:node /app/.output ./.output
-
-ENV NODE_ENV="production"
-
-CMD ["node", ".output/server/index.mjs"]
+COPY --from=builder --chown=nonroot:nonroot /app/.output ./.output
 
 EXPOSE 3000
+
+CMD [".output/server/index.mjs"]

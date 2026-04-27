@@ -1,0 +1,16 @@
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu
+    container_name: basketball-devcontainer
+    networks:
+      basketball:
+        aliases:
+          - app
+    volumes:
+      - .:/workspace/basketball-form:cached
+    tty: true
+    stdin_open: true
+    command: /bin/bash
+
+  app:
+      profiles: ["donotstart"]

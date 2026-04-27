@@ -1,0 +1,101 @@
+name: Parse and review code
+
+on:
+    pull_request:
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    pull-requests: write
+    contents: read
+    models: read
+
+jobs:
+    setup:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+
+            - name: Install Node
+              uses: actions/setup-node@v6
+              id: setup-node
+              with:
+                  node-version: lts/*
+                  cache: npm
+
+            - name: Install dependencies
+              if: steps.setup-node.outputs.cache-hit != 'true'
+              run: npm ci
+
+    oxc:
+        runs-on: ubuntu-latest
+        needs: setup
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+
+            - name: Install Node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: lts/*
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run format
+              run: npm run fmt:check
+
+            - name: Run lint
+              run: npm run lint:github
+
+    test:
+        runs-on: ubuntu-latest
+        needs: oxc
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v6
+
+            - name: Install Node
+              uses: actions/setup-node@v6
+              with:
+                  node-version: lts/*
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run Vitest
+              run: npm run test
+
+    # review:
+    #     runs-on: ubuntu-latest
+    #     needs: [oxc, test]
+    #     steps:
+    #         - name: Checkout repository
+    #           uses: actions/checkout@v6
+    #           with:
+    #               fetch-depth: 0
+
+    #         - name: Install Node
+    #           uses: actions/setup-node@v6
+    #           with:
+    #               node-version: lts/*
+    #               cache: npm
+
+    #         - name: Install dependencies
+    #           run: npm ci
+
+    #         - name: Install Shippie
+    #           run: npm install -g shippie
+
+    #         - name: Code review
+    #           run: npx shippie review --telemetry=false --platform=github --baseUrl=https://models.github.ai/inference
+    #           env:
+    #               GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #               BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    #               GITHUB_SHA: ${{ github.sha }}
+    #               OPENAI_API_KEY: ${{ secrets.GITHUB_TOKEN }}

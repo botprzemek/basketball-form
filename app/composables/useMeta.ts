@@ -70,7 +70,7 @@ export default () => {
             ogTitle: _title,
             twitterTitle: _title,
             titleTemplate: (titleChunk) =>
-                titleChunk ? `${titleChunk}` : `${name}`,
+                titleChunk ? `${titleChunk}` : `${name()}`,
             description: _description,
             ogDescription: _description,
             twitterDescription: _description,

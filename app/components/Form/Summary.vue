@@ -1,10 +1,10 @@
 <script lang="js" setup>
-const { Stage, stage, data, errors, set } = useStageManager();
+const { Step, data, set } = useForm();
 </script>
 
 <template>
     <h2 class="text-center">
-        <span>{{ stage }}/3</span>
+        <span>{{ data.step }}/3</span>
         {{ $t(`pages.index.content.summary.title`) }}
     </h2>
 
@@ -43,7 +43,7 @@ const { Stage, stage, data, errors, set } = useStageManager();
                 1.1
                 {{ $t(`components.input.team.name`) }}
                 <span
-                    @click="set(Stage.TEAM)"
+                    @click="set(Step.TEAM)"
                     class="text-crimson underline hover:cursor-pointer"
                 >
                     {{
@@ -59,7 +59,7 @@ const { Stage, stage, data, errors, set } = useStageManager();
                 1.2
                 {{ $t(`components.select.category.0`) }}
                 <span
-                    @click="set(Stage.TEAM)"
+                    @click="set(Step.TEAM)"
                     class="text-crimson underline hover:cursor-pointer"
                 >
                     {{
@@ -75,7 +75,7 @@ const { Stage, stage, data, errors, set } = useStageManager();
                 1.3
                 {{ $t(`components.input.team.email`) }}
                 <span
-                    @click="set(Stage.TEAM)"
+                    @click="set(Step.TEAM)"
                     class="text-crimson underline hover:cursor-pointer"
                 >
                     {{
@@ -91,7 +91,7 @@ const { Stage, stage, data, errors, set } = useStageManager();
                 1.4
                 {{ $t(`components.input.team.phone`) }}
                 <span
-                    @click="set(Stage.TEAM)"
+                    @click="set(Step.TEAM)"
                     class="text-crimson underline hover:cursor-pointer"
                 >
                     {{
@@ -116,15 +116,15 @@ const { Stage, stage, data, errors, set } = useStageManager();
             <template
                 v-if="
                     number === 3 &&
-                    !player.first_name &&
-                    !player.last_name &&
+                    !player.firstName &&
+                    !player.lastName &&
                     !player.age
                 "
             >
                 4. {{ $t(`pages.index.content.summary.bench`) }}
                 <span
                     class="text-crimson underline hover:cursor-pointer"
-                    @click="set(Stage.PLAYERS)"
+                    @click="set(Step.PLAYERS)"
                 >
                     {{ $t(`components.input.add`) }}
                 </span>
@@ -133,16 +133,13 @@ const { Stage, stage, data, errors, set } = useStageManager();
             <template v-else>
                 {{ number + 1 }}.
                 {{
-                    player.first_name ||
-                    $t(`components.input.player.first_name`)
+                    player.firstName || $t(`components.input.player.firstName`)
                 }}
-                {{
-                    player.last_name || $t(`components.input.player.last_name`)
-                }}
+                {{ player.lastName || $t(`components.input.player.lastName`) }}
                 - {{ player.age || $t(`components.input.player.age`) }}
                 <span
                     class="text-crimson underline hover:cursor-pointer"
-                    @click="set(Stage.PLAYERS)"
+                    @click="set(Step.PLAYERS)"
                 >
                     {{ $t(`components.input.fill`) }}
                 </span>
@@ -177,8 +174,8 @@ const { Stage, stage, data, errors, set } = useStageManager();
             </i18n-t>
         </section>
 
-        <TextImportant v-if="errors.accepted" class="text-right text-sm">
+        <!-- <TextImportant v-if="errors.accepted" class="text-right text-sm">
             {{ $t(`requirements.regulations`) }}
-        </TextImportant>
+        </TextImportant> -->
     </fieldset>
 </template>

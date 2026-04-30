@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: "Inter", "Courier New", "Courier", monospace;
-    
-  --text-xxl: 3rem;
-  --text-xl: 1.75rem;
-  --text-lg: 1.25rem;
-  --text-md: 1rem;
-  --text-sm: 0.85rem;
+    --font-display: "Inter", "Courier New", "Courier", monospace;
 
-  --color-crimson: rgba(242, 53, 53, 1);
-  --color-mid: rgba(125, 125, 125, 1);
-  --color-dark: rgba(30, 30, 30, 1);
+    --text-xxl: 3rem;
+    --text-xl: 1.75rem;
+    --text-lg: 1.25rem;
+    --text-md: 1rem;
+    --text-sm: 0.85rem;
+
+    --color-crimson: rgba(242, 53, 53, 1);
+    --color-mid: rgba(125, 125, 125, 1);
+    --color-dark: rgba(30, 30, 30, 1);
 }
 
 @layer base {
     html {
-        @apply select-none bg-dark font-display text-md text-mid;
+        @apply bg-dark font-display text-md text-mid select-none;
     }
 
     body {
@@ -24,7 +24,7 @@
     }
 
     main {
-        @apply flex w-[100dvw] flex-col items-center gap-3 overflow-x-hidden px-3 pb-24 pt-6 sm:w-[36rem] md:w-[42rem];
+        @apply flex w-[100dvw] flex-col items-center gap-3 overflow-x-hidden px-3 pt-6 pb-24 sm:w-[36rem] md:w-[42rem];
     }
 
     h1,

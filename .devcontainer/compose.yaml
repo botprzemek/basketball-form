@@ -5,12 +5,16 @@ services:
     networks:
       basketball:
         aliases:
-          - app
+          - form
+    environment:
+      NUXT_APP_BASE_URL: "/"
+      NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/defaultdb?sslmode=disable"
+      NUXT_TOKEN: "your-secret-token"
     volumes:
       - .:/workspace/basketball-form:cached
     tty: true
     stdin_open: true
     command: /bin/bash
 
-  app:
+  form:
       profiles: ["donotstart"]

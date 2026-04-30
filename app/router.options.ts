@@ -14,14 +14,24 @@ export default {
             };
         }
 
-        if (to.hash) {
-            const el = document.querySelector(to.hash) as HTMLElement;
-
+        if (!to.hash) {
             return {
                 left: 0,
-                top: (el?.offsetTop ?? 0) - 30,
+                top: 0,
                 behavior: "smooth",
             };
         }
+
+        const element = document.querySelector(to.hash);
+        const top =
+            element && element instanceof HTMLElement
+                ? element.offsetTop - 30
+                : 0;
+
+        return {
+            left: 0,
+            top,
+            behavior: "smooth",
+        };
     },
 } satisfies RouterOptions;

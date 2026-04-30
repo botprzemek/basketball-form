@@ -8,7 +8,9 @@ defineI18nRoute({
 
 <template>
     <main>
-        <IconLogo width="200" height="200" />
+        <NuxtLinkLocale to="/">
+            <IconLogo width="200" height="200" />
+        </NuxtLinkLocale>
 
         <h1 class="text-center">
             {{ $t(`pages.about.title`) }}

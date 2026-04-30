@@ -1,6 +1,6 @@
 <template>
     <button
-        class="grid h-12 w-full place-content-center rounded-lg bg-crimson px-6 py-3 text-center"
+        class="bg-crimson grid h-12 w-full place-content-center px-6 py-3 text-center hover:cursor-pointer"
     >
         <span class="font-bold text-white">
             <slot />

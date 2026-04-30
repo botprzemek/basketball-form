@@ -17,6 +17,6 @@ const { placeholder, pattern, min, max } = defineProps<{
         :max="max"
         type="number"
         required
-        class="h-12 w-full rounded-lg border border-mid bg-transparent px-4 py-2 outline-none placeholder:text-mid focus:border-crimson focus:text-crimson focus:placeholder:text-crimson"
+        class="border-mid placeholder:text-mid focus:border-crimson focus:text-crimson focus:placeholder:text-crimson h-12 w-full border bg-transparent px-4 py-2 outline-none"
     />
 </template>

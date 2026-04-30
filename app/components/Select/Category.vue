@@ -1,11 +1,9 @@
 <script setup lang="ts">
-const { Category, data } = useStageManager();
+const { Category, data } = useForm();
 </script>
 
 <template>
-    <aside
-        class="h-12 w-full rounded-lg border border-mid px-4 py-2 placeholder:text-mid"
-    >
+    <aside class="border-mid placeholder:text-mid h-12 w-full border px-4 py-2">
         <select
             v-model="data.team.category"
             :placeholder="$t(`components.select.category.0`)"

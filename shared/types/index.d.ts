@@ -1,56 +1,51 @@
-enum Category {
-    NOT_SELECTED,
-    AMATEUR,
-    PRO,
+interface CategoryRow {
+    id: string;
+    name: string;
 }
 
-enum Stage {
-    START,
-    TEAM,
-    PLAYERS,
-    SUMMARY,
-    SENT,
+interface TeamRow {
+    id: string;
+    category_id: number;
+    name: string;
+    email: string;
+    phone: string;
+    created_at: Date;
+    verified_at?: Date;
 }
 
-type Flatten<Type> = Type extends Array<infer Inner> ? Flatten<Inner> : Type;
+interface PlayerRow {
+    id: string;
+    team_id: string;
+    first_name: string;
+    last_name: string;
+    age: number;
+    created_at: Date;
+}
 
-type Nested<Origin, Type> = {
-    [Property in keyof Origin]: Origin[Property] extends object
-        ? Nested<Origin[Property], Type>
-        : Type;
-};
+interface Player {
+    firstName: string;
+    lastName: string;
+    age: number;
+}
 
-type Team = {
+interface Team {
     name: string;
     category: Category;
     email: string;
-    phone?: string;
+    phone: string;
+    players: Array<Player>;
+}
+
+type TeamDetailed = Team & {
+    id: string;
+    createdAt: Date;
+    verifiedAt?: Date;
 };
 
-type Player = {
-    first_name: string;
-    last_name: string;
-    age?: number;
-};
-
-type Data = {
-    team: Team;
-    players: Player[];
-    accepted: boolean;
-};
-
-type Errors = Nested<Data, boolean>;
-
-type Patterns = {
-    [Property in keyof Origin]: Origin[Property] extends object
-        ? Nested<Flatten<Origin[Property]>, Type>
-        : Type;
-};
-
-type Link = {
+interface Link {
     href: string;
     type: string;
     rel: string;
     sizes?: string;
     media?: string;
-};
+}

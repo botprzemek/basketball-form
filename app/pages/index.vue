@@ -1,22 +1,24 @@
-<script setup lang="ts" async>
-const stages = [
-    resolveComponent("FormStart"),
-    resolveComponent("FormTeam"),
-    resolveComponent("FormPlayers"),
-    resolveComponent("FormSummary"),
-    resolveComponent("FormSent"),
-];
-const { stage, next } = useStageManager();
-const currentStage = computed(() => stages.at(stage.value ?? 0));
+<script setup lang="ts">
+const { Step, data, submit } = useForm();
+const components = {
+    [Step.START]: resolveComponent("FormStart"),
+    [Step.TEAM]: resolveComponent("FormTeam"),
+    [Step.PLAYERS]: resolveComponent("FormPlayers"),
+    [Step.SUMMARY]: resolveComponent("FormSummary"),
+    [Step.SENT]: resolveComponent("FormSent"),
+} as const;
+
+const currentStep = computed(() => components[data.value.step ?? Step.START]);
 </script>
 
 <template>
     <main>
         <form
-            @submit.prevent="next()"
+            @submit.prevent="submit"
             class="flex w-full flex-col items-center justify-stretch gap-3"
         >
-            <component :is="currentStage" />
+            <component :is="currentStep" :key="data.step" />
+
             <FormControls />
         </form>
     </main>

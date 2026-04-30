@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const { stage, data, errors } = useStageManager();
+const { data } = useForm();
 </script>
 
 <template>
     <h2 class="text-center">
-        <span>{{ stage }}/3</span>
+        <span>{{ data.step }}/3</span>
         {{ $t(`pages.index.content.team.title`) }}
     </h2>
 
@@ -38,14 +38,14 @@ const { stage, data, errors } = useStageManager();
             name="username"
             type="text"
         />
-        <TextImportant v-if="errors.team.name" class="text-sm">
+        <!-- <TextImportant v-if="errors.team.name" class="text-sm">
             {{ $t(`requirements.field`) }}
-        </TextImportant>
+        </TextImportant> -->
 
         <SelectCategory />
-        <TextImportant v-if="errors.team.category" class="text-sm">
+        <!-- <TextImportant v-if="errors.team.category" class="text-sm">
             {{ $t(`requirements.category`) }}
-        </TextImportant>
+        </TextImportant> -->
 
         <InputBase
             v-model="data.team.email"
@@ -54,9 +54,9 @@ const { stage, data, errors } = useStageManager();
             name="email"
             type="email"
         />
-        <TextImportant v-if="errors.team.email" class="text-sm">
+        <!-- <TextImportant v-if="errors.team.email" class="text-sm">
             {{ $t(`requirements.email`) }}
-        </TextImportant>
+        </TextImportant> -->
 
         <InputBase
             v-model="data.team.phone"
@@ -65,8 +65,8 @@ const { stage, data, errors } = useStageManager();
             name="tel"
             type="tel"
         />
-        <TextImportant v-if="errors.team.phone" class="text-sm">
+        <!-- <TextImportant v-if="errors.team.phone" class="text-sm">
             {{ $t(`requirements.phone`) }}
-        </TextImportant>
+        </TextImportant> -->
     </fieldset>
 </template>

@@ -10,11 +10,11 @@ export default defineNuxtConfig({
         },
     },
 
-    modules: ["@nuxtjs/seo", "@nuxtjs/i18n", "@nuxt/image"],
+    modules: ["@nuxtjs/seo", "@nuxtjs/i18n", "@nuxt/image", "@nuxt/fonts"],
 
     runtimeConfig: {
-        database: "postgresql://user:password@host:5432/postgres",
-        token: "your-secret-token",
+        databaseUrl: "",
+        token: "",
         public: {
             author: "notbyte.com",
             name: "3X3",
@@ -62,7 +62,7 @@ export default defineNuxtConfig({
                 code: "pl",
                 name: "Polski",
                 language: "pl-PL",
-                file: "pl-PL.ts",
+                file: "pl-PL.json",
             },
         ],
     },

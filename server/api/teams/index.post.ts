@@ -1,14 +1,7 @@
 export default defineEventHandler(async (event) => {
-    const team = await readBody<Team>(event);
+    const body = await readBody(event);
 
-    if (!team) {
-        setResponseStatus(event, 400);
+    const [result] = await database.insert(teams).values(body).returning();
 
-        return;
-    }
-
-    const teams = useTeams();
-    await teams.register(team);
-
-    setResponseStatus(event, 202);
+    return result;
 });

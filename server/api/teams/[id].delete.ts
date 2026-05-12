@@ -7,11 +7,8 @@ export default defineEventHandler(async (event) => {
         return;
     }
 
-    const body = await readBody(event);
-
-    const [result] = await database
-        .update(teams)
-        .set(body)
+    const result = await database
+        .delete(teams)
         .where(eq(teams.id, id))
         .returning();
 

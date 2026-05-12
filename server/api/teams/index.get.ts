@@ -1,6 +1,5 @@
-export default defineEventHandler(async (_event) => {
-    const teams = useTeams();
-    const data = await teams.get();
+export default defineEventHandler(async () => {
+    const results = await database.select().from(teams);
 
-    return data;
+    return results;
 });

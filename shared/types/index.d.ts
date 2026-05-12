@@ -1,51 +1,47 @@
-interface CategoryRow {
+interface Category {
     id: string;
     name: string;
-}
-
-interface TeamRow {
-    id: string;
-    category_id: number;
-    name: string;
-    email: string;
-    phone: string;
-    created_at: Date;
-    verified_at?: Date;
-}
-
-interface PlayerRow {
-    id: string;
-    team_id: string;
-    first_name: string;
-    last_name: string;
-    age: number;
-    created_at: Date;
-}
-
-interface Player {
-    firstName: string;
-    lastName: string;
-    age: number;
+    createdAt: Date;
+    updatedAt?: Date | null;
 }
 
 interface Team {
+    id: string;
     name: string;
-    category: Category;
+    categoryId: number;
     email: string;
     phone: string;
-    players: Array<Player>;
-}
-
-type TeamDetailed = Team & {
-    id: string;
     createdAt: Date;
-    verifiedAt?: Date;
+    verifiedAt?: Date | null;
+    updatedAt?: Date | null;
 };
 
-interface Link {
-    href: string;
-    type: string;
-    rel: string;
-    sizes?: string;
-    media?: string;
-}
+interface Player {
+    id: string;
+    teamId: string;
+    firstName: string;
+    lastName: string;
+    age: number;
+    createdAt: Date;
+    updatedAt: Date;
+};
+
+interface CategoryPayload {
+    name: string;
+};
+
+interface TeamPayload {
+    categoryId: number;
+    name: string;
+    email: string;
+    phone: string;
+    createdAt: Date;
+    updatedAt?: Date | null;
+};
+
+interface PlayerPayload {
+    teamId?: string | null;
+    firstName: string;
+    lastName: string;
+    age: number;
+};

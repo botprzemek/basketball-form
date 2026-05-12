@@ -1,18 +1,18 @@
-import { eq } from "drizzle-orm";
-
 export default defineEventHandler(async (event) => {
-    const id = getRouterParam(event, "id");
+    const teamId = getRouterParam(event, "id");
 
-    if (!id) {
+    if (!teamId) {
         return;
     }
 
     const body = await readBody(event);
 
     const [result] = await database
-        .update(teams)
-        .set(body)
-        .where(eq(teams.id, id))
+        .insert(players)
+        .values({
+            ...body,
+            teamId,
+        })
         .returning();
 
     return result;

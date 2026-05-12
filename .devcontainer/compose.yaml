@@ -1,3 +1,9 @@
+networks:
+  basketball:
+    name: basketball
+    driver: bridge
+    external: true
+
 services:
   devcontainer:
     image: mcr.microsoft.com/devcontainers/base:ubuntu
@@ -8,7 +14,7 @@ services:
           - form
     environment:
       NUXT_APP_BASE_URL: "/"
-      NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/basketball?sslmode=disable"
+      NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/dev?sslmode=disable"
       NUXT_TOKEN: "your-secret-token"
     volumes:
       - .:/workspace/basketball-form:cached
@@ -17,21 +23,18 @@ services:
     command: /bin/bash
   
   init-database:
-    image: cockroachdb/cockroach:latest-v23.2
+    image: cockroachdb/cockroach:latest-v26.1
     networks:
       basketball:
-    depends_on:
-      db:
-        condition: service_healthy
+    command: init --host basketball-database:26257 --insecure
+  
+  migrate-database:
+    image: cockroachdb/cockroach:latest-v26.1
+    networks:
+      basketball:
     volumes:
-      - ../database.sql:/cockroach/init.sql
-    entrypoint: >
-      /bin/sh -c "
-        ./cockroach init --host=basketball-database:26257 --insecure
-        ./cockroach sql --insecure --host=db:26257 < /cockroach/init.sql
-      "
-    depends_on:
-      - database
+      - ./database.sql:/cockroach/init.sql
+    command: sql --host basketball-database:26257 --insecure --database dev --file /cockroach/init.sql
 
   form:
       profiles: ["donotstart"]

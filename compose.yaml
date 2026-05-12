@@ -9,21 +9,22 @@ volumes:
 
 services:
   database:
-    image: cockroachdb/cockroach:latest-v23.2
+    image: cockroachdb/cockroach:latest-v26.1
     container_name: basketball-database
     networks:
       basketball:
     volumes:
       - database:/cockroach/cockroach-data
-    command: start-single-node --advertise-addr=basketball-database:26257 --insecure
+    command: start-single-node --advertise-addr basketball-database:26257 --insecure
 
   init-database:
-    image: cockroachdb/cockroach:latest-v23.2
+    image: cockroachdb/cockroach:latest-v26.1
     networks:
       basketball:
-    command: init --host=basketball-database:26257 --insecure
     depends_on:
-      - database
+      database:
+        condition: service_healthy
+    command: init --host basketball-database:26257 --insecure
 
   form:
     image: basketball-form:latest
@@ -31,7 +32,7 @@ services:
     container_name: basketball-form
     environment:
       NUXT_APP_BASE_URL: "/"
-      NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/defaultdb?sslmode=disable"
+      NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/prod?sslmode=disable"
       NUXT_TOKEN: "your-secret-token"
     networks:
       basketball:

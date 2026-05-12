@@ -1,4 +1,4 @@
-import { defineRelations } from "drizzle-orm";
+import { relations } from "drizzle-orm/_relations";
 import { drizzle } from "drizzle-orm/cockroach";
 import {
     uuid,
@@ -8,15 +8,18 @@ import {
     int2,
 } from "drizzle-orm/cockroach-core";
 
-const { databaseUrl } = useRuntimeConfig();
-
-export const database = drizzle(databaseUrl);
-
-export const schema = cockroachSchema("basketball");
+const schema = cockroachSchema("basketball");
 
 export const categories = schema.table("categories", {
     id: uuid("id").primaryKey().defaultRandom(),
     name: text("name").notNull(),
+    teams_limit: int2("teams_limit").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+        () => new Date(),
+    ),
 });
 
 export const teams = schema.table("teams", {
@@ -26,18 +29,52 @@ export const teams = schema.table("teams", {
     email: text("email").notNull(),
     phone: text("phone").notNull(),
     city: text("city").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+        () => new Date(),
+    ),
 });
+
+export const categoryLimits = schema
+    .view("category_limits", {
+        id: uuid("id").primaryKey().defaultRandom(),
+        name: text("name").notNull().unique(),
+        teamsLimit: int2("team_limit").notNull().default(0),
+        teamsCount: int2("teams_count").notNull().default(0),
+        teamsRemaining: int2("teams_remaining").notNull().default(0),
+        createdAt: timestamp("created_at", { withTimezone: true })
+            .notNull()
+            .defaultNow(),
+        updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+            () => new Date(),
+        ),
+    })
+    .existing();
 
 export const players = schema.table("players", {
     id: uuid("id").primaryKey().defaultRandom(),
     teamId: uuid("team_id").references(() => teams.id, { onDelete: "cascade" }),
     firstName: text("first_name").notNull(),
     lastName: text("last_name").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+        () => new Date(),
+    ),
 });
 
 export const tournaments = schema.table("tournaments", {
     id: uuid("id").primaryKey().defaultRandom(),
     name: text("name").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+        () => new Date(),
+    ),
 });
 
 export const groups = schema.table("groups", {
@@ -46,6 +83,12 @@ export const groups = schema.table("groups", {
         onDelete: "cascade",
     }),
     name: text("name").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+        () => new Date(),
+    ),
 });
 
 export const groupTeams = schema.table("group_teams", {
@@ -59,6 +102,12 @@ export const officials = schema.table("officials", {
     id: uuid("id").primaryKey().defaultRandom(),
     firstName: text("first_name").notNull(),
     lastName: text("last_name").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+        () => new Date(),
+    ),
 });
 
 export const matches = schema.table("matches", {
@@ -69,12 +118,19 @@ export const matches = schema.table("matches", {
     }),
     homeTeamId: uuid("home_team_id").references(() => teams.id),
     awayTeamId: uuid("away_team_id").references(() => teams.id),
+    winningTeamId: uuid("winning_team_id").references(() => teams.id),
     refereeId: uuid("referee_id").references(() => officials.id),
-    scheduledAt: timestamp("scheduled_at", { withTimezone: true }),
     status: text("status").default("scheduled"),
     homeScore: int2("home_score").default(0),
     awayScore: int2("away_score").default(0),
-    winningTeamId: uuid("winning_team_id").references(() => teams.id),
+    scheduledAt: timestamp("scheduled_at", { withTimezone: true }),
+    startedAt: timestamp("started_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+        .notNull()
+        .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).$onUpdate(
+        () => new Date(),
+    ),
 });
 
 export const matchEvents = schema.table("match_events", {
@@ -89,74 +145,88 @@ export const matchEvents = schema.table("match_events", {
     scoreAfterEvent: text("score_after_event"),
 });
 
-export const relations = defineRelations(
-    { matches, matchEvents, groups, players, teams },
-    (r) => ({
-        matches: {
-            homeTeam: r.one.teams({
-                from: r.matches.homeTeamId,
-                to: r.teams.id,
-            }),
-            awayTeam: r.one.teams({
-                from: r.matches.awayTeamId,
-                to: r.teams.id,
-            }),
-            group: r.one.groups({
-                from: r.matches.groupId,
-                to: r.groups.id,
-            }),
-            events: r.many.matchEvents({
-                from: r.matches.id,
-                to: r.matchEvents.matchId,
-            }),
-            parentMatch: r.one.matches({
-                from: r.matches.parentMatchId,
-                to: r.matches.id,
-                alias: "next_round_match",
-            }),
-        },
+export const categoriesRelations = relations(categories, ({ many }) => ({
+    teams: many(teams),
+}));
 
-        teams: {
-            players: r.many.players({
-                from: r.teams.id,
-                to: r.players.teamId,
-            }),
-            homeMatches: r.many.matches({
-                from: r.teams.id,
-                to: r.matches.homeTeamId,
-            }),
-            awayMatches: r.many.matches({
-                from: r.teams.id,
-                to: r.matches.awayTeamId,
-            }),
-        },
-
-        players: {
-            team: r.one.teams({
-                from: r.players.teamId,
-                to: r.teams.id,
-                optional: false,
-            }),
-            events: r.many.matchEvents({
-                from: r.players.id,
-                to: r.matchEvents.playerId,
-            }),
-        },
-
-        matchEvents: {
-            match: r.one.matches({
-                from: r.matchEvents.matchId,
-                to: r.matches.id,
-                optional: false,
-            }),
-            player: r.one.players({
-                from: r.matchEvents.playerId,
-                to: r.players.id,
-            }),
-            team: r.one.teams({
-                from: r.matchEvents.teamId,
-                to: r.teams.id,
-            }),
-        },
+export const teamsRelations = relations(teams, ({ one, many }) => ({
+    category: one(categories, {
+        fields: [teams.categoryId],
+        references: [categories.id],
     }),
-);
+    players: many(players),
+    homeMatches: many(matches, { relationName: "homeTeam" }),
+    awayMatches: many(matches, { relationName: "awayTeam" }),
+    matchEvents: many(matchEvents),
+}));
+
+export const playersRelations = relations(players, ({ one, many }) => ({
+    team: one(teams, {
+        fields: [players.teamId],
+        references: [teams.id],
+    }),
+    events: many(matchEvents),
+}));
+
+export const matchesRelations = relations(matches, ({ one, many }) => ({
+    homeTeam: one(teams, {
+        fields: [matches.homeTeamId],
+        references: [teams.id],
+        relationName: "homeTeam",
+    }),
+    awayTeam: one(teams, {
+        fields: [matches.awayTeamId],
+        references: [teams.id],
+        relationName: "awayTeam",
+    }),
+    group: one(groups, {
+        fields: [matches.groupId],
+        references: [groups.id],
+    }),
+    events: many(matchEvents),
+    parentMatch: one(matches, {
+        fields: [matches.parentMatchId],
+        references: [matches.id],
+        relationName: "next_round_match",
+    }),
+}));
+
+export const matchEventsRelations = relations(matchEvents, ({ one }) => ({
+    match: one(matches, {
+        fields: [matchEvents.matchId],
+        references: [matches.id],
+    }),
+    player: one(players, {
+        fields: [matchEvents.playerId],
+        references: [players.id],
+    }),
+    team: one(teams, {
+        fields: [matchEvents.teamId],
+        references: [teams.id],
+    }),
+}));
+
+const { databaseUrl } = useRuntimeConfig();
+
+const config = {
+    schema: {
+        // categories,
+        // teams,
+        // players,
+        // tournaments,
+        // groups,
+        // groupTeams,
+        // officials,
+        // matches,
+        // matchEvents,
+
+        // categoriesRelations,
+        // teamsRelations,
+        // playersRelations,
+        // matchesRelations,
+
+        categoryLimits,
+    },
+};
+
+export const database = drizzle(databaseUrl, config);

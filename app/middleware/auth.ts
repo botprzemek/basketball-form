@@ -3,6 +3,10 @@ export default defineNuxtRouteMiddleware((_route, { query: { token } }) => {
         return;
     }
 
+    if (!import.meta.dev) {
+        return;
+    }
+
     if (token === useRuntimeConfig().token) {
         return;
     }

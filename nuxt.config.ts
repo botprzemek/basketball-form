@@ -1,6 +1,5 @@
 import tailwindcss from "@tailwindcss/vite";
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
     devtools: {
@@ -10,7 +9,7 @@ export default defineNuxtConfig({
         },
     },
 
-    modules: ["@nuxtjs/seo", "@nuxtjs/i18n", "@nuxt/image", "@nuxt/fonts"],
+    modules: ["@nuxtjs/seo", "@nuxtjs/i18n", "@nuxt/fonts"],
 
     runtimeConfig: {
         databaseUrl: "",
@@ -27,24 +26,24 @@ export default defineNuxtConfig({
         rootAttrs: {
             id: "basketball-root",
         },
-
         teleportTag: "aside",
         teleportAttrs: {
             id: "basketball-teleports",
         },
-
         pageTransition: {
             name: "page",
             mode: "out-in",
         },
     },
 
-    ogImage: { zeroRuntime: true },
-
     css: ["./app/assets/css/main.css"],
     vite: {
         plugins: [tailwindcss()],
     },
+
+    ogImage: { enabled: false },
+
+    site: { indexable: false },
 
     i18n: {
         baseUrl: process.env.NUXT_PUBLIC_URL,
@@ -56,7 +55,6 @@ export default defineNuxtConfig({
             cookieKey: "basketball-lang",
             redirectOn: "root",
         },
-
         locales: [
             {
                 code: "pl",

@@ -32,23 +32,25 @@ type Step = (typeof Step)[keyof typeof Step];
 interface Data {
     step: Step;
     team: Team;
+    category: Category;
+    players: Array<Player>;
     accepted: boolean;
 }
 
 const initData = () =>
     ({
         step: Step.START,
+        category: Category.NOT_SELECTED,
         team: {
             name: "",
-            category: Category.NOT_SELECTED,
             email: "",
             phone: "",
-            players: Array.from({ length: 4 }, () => ({
-                firstName: "",
-                lastName: "",
-                age: 0,
-            })),
         },
+        players: Array.from({ length: 4 }, () => ({
+            firstName: "",
+            lastName: "",
+            age: 0,
+        })),
         accepted: false,
     }) satisfies Data;
 

@@ -1,27 +1,24 @@
+<script setup lang="ts">
+useHead({
+    link: [
+        {
+            rel: "icon",
+            type: "image/png",
+            href: "/favicon.png",
+        },
+    ],
+});
+
+useSeoMeta({
+    ogImage: "og-image.jpg",
+});
+
+const { categories } = useCategories();
+</script>
+
 <template>
-    <NuxtLayout>
-        <NuxtPage />
-    </NuxtLayout>
+    <!-- <NuxtPage /> -->
+    <div>
+        {{ categories }}
+    </div>
 </template>
-
-<style>
-.page-enter-active,
-.page-leave-active {
-    transition:
-        opacity 500ms ease-in-out,
-        transform 750ms;
-}
-
-.page-enter-active {
-    transition-delay: 250ms;
-}
-
-.page-enter-from,
-.page-leave-to {
-    opacity: 0;
-}
-
-.page-enter-from {
-    transform: translateY(-2rem);
-}
-</style>

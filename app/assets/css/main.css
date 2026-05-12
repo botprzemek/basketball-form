@@ -50,3 +50,23 @@
         @apply text-md;
     }
 }
+
+.page-enter-active,
+.page-leave-active {
+    transition:
+        opacity 350ms ease-in-out,
+        transform 350ms;
+}
+
+.page-enter-active {
+    transition-delay: 50ms;
+}
+
+.page-enter-from,
+.page-leave-to {
+    opacity: 0;
+}
+
+.page-enter-from {
+    transform: translateY(-1.5rem);
+}

@@ -5,7 +5,7 @@ const { Category, data } = useForm();
 <template>
     <aside class="border-mid placeholder:text-mid h-12 w-full border px-4 py-2">
         <select
-            v-model="data.team.category"
+            v-model="data.category"
             :placeholder="$t(`components.select.category.0`)"
             name="category"
             required

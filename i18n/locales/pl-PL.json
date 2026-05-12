@@ -36,8 +36,8 @@
         "select": {
             "category": {
                 "0": "Kategoria rozgrywek",
-                "1": "Amatorska",
-                "2": "Profesjonalna"
+                "1": "AMATOR",
+                "2": "PRO"
             }
         }
     },
@@ -66,7 +66,7 @@
                 },
                 "team": {
                     "title": "Dane drużyny",
-                    "description": "Zgodnie z regulaminem tegoroczny turniej podzielony będzie na kategorie Pro i Amator, bez względu na podział wiekowy.{br} Kategoria {pro} - mogą zapisać się wszyscy chętni gracze (z naciskiem na świadomość wyboru), natomiast {amateur} pozwala na grę dla świeżych zespołów z osób grających rekreacyjnie lub aktywnych maksymalnie (niezrzeszonych w PZKosz)."
+                    "description": "Zgodnie z regulaminem tegoroczny turniej podzielony będzie na kategorie {pro1} i {amateur1}, bez względu na podział wiekowy.{br} Do kategorii {pro2} mogą zapisać się wszyscy chętni gracze (z naciskiem na świadomość wyboru), natomiast {amateur2} pozwala na grę dla świeższych zespołów z osób grających rekreacyjnie lub aktywnych maksymalnie (niezrzeszonych w PZKosz)."
                 },
                 "players": {
                     "title": "Dane zawodników",

@@ -18,7 +18,8 @@
             "team": {
                 "name": "Nazwa drużyny",
                 "email": "Adres e-mail",
-                "phone": "Numer telefonu"
+                "phone": "Numer telefonu",
+                "city": "Miasto"
             },
             "player": {
                 "label": "Dane zawodnika",
@@ -35,9 +36,9 @@
         },
         "select": {
             "category": {
-                "0": "Kategoria rozgrywek",
-                "1": "AMATOR",
-                "2": "PRO"
+                "default": "Kategoria rozgrywek",
+                "amateur": "AMATOR",
+                "pro": "PRO"
             }
         }
     },
@@ -70,7 +71,7 @@
                 },
                 "players": {
                     "title": "Dane zawodników",
-                    "bench": "(Rezerwa)"
+                    "bench": "(Rezerwowy)"
                 },
                 "summary": {
                     "title": "Podsumowanie",

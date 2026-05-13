@@ -1,7 +1,5 @@
 export default defineEventHandler(async () => {
-    const results = await database._query.categoryLimits.findMany({
-        with: {},
-    });
+    const results = database.query.categoryLimits.findMany();
 
     return results;
 });

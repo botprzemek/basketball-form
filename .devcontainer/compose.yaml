@@ -22,19 +22,22 @@ services:
     stdin_open: true
     command: /bin/bash
   
-  init-database:
-    image: cockroachdb/cockroach:latest-v26.1
-    networks:
-      basketball:
-    command: init --host basketball-database:26257 --insecure
-  
   migrate-database:
     image: cockroachdb/cockroach:latest-v26.1
     networks:
       basketball:
     volumes:
-      - ./database.sql:/cockroach/init.sql
-    command: sql --host basketball-database:26257 --insecure --database dev --file /cockroach/init.sql
+      - ./migrate.sql:/cockroach/migrate.sql
+    command: sql --host basketball-database:26257 --insecure --database dev --file /cockroach/migrate.sql
+  
+  seed-database:
+    image: cockroachdb/cockroach:latest-v26.1
+    networks:
+      basketball:
+    volumes:
+      - ./seed.sql:/cockroach/seed.sql
+    command: sql --host basketball-database:26257 --insecure --database dev --file /cockroach/seed.sql
+
 
   form:
       profiles: ["donotstart"]

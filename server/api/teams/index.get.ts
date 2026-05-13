@@ -1,10 +1,5 @@
 export default defineEventHandler(async () => {
-    const results = await database._query.teams.findMany({
-        with: {
-            category: true,
-            players: true,
-        },
-    });
+    const results = await database.query.teams.findMany();
 
     return results;
 });

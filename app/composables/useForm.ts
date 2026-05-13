@@ -1,9 +1,3 @@
-const Category = {
-    NOT_SELECTED: 0,
-    AMATEUR: 1,
-    PRO: 2,
-} as const;
-
 const Step = {
     START: 0,
     TEAM: 1,
@@ -25,57 +19,55 @@ const Transitions: Record<Step, Transition> = {
     [Step.SENT]: { next: null, previous: null },
 } as const;
 
-type Category = (typeof Category)[keyof typeof Category];
-
 type Step = (typeof Step)[keyof typeof Step];
 
-interface Data {
-    step: Step;
-    team: Team;
-    category: Category;
-    players: Array<Player>;
-    accepted: boolean;
-}
-
-const initData = () =>
-    ({
-        step: Step.START,
-        category: Category.NOT_SELECTED,
-        team: {
-            name: "",
-            email: "",
-            phone: "",
-        },
-        players: Array.from({ length: 4 }, () => ({
-            firstName: "",
-            lastName: "",
-            age: 0,
-        })),
-        accepted: false,
-    }) satisfies Data;
-
 export default () => {
-    const data = useState<Data>("basketball-data", initData);
-    const currentTransition = computed(() => Transitions[data.value.step]);
+    const step = useState<Step>("basketball-form-step", () => Step.START);
+    const accepted = useState<boolean>("basketball-form-accepted", () => false);
+    const category = useState<Category | null>(
+        "basketball-form-category",
+        () => null,
+    );
+    const team = useState<Partial<TeamPayload>>("basketball-form-team", () => ({
+        name: undefined,
+        email: undefined,
+        phone: undefined,
+        city: undefined,
+    }));
+    const players = useState<Array<Partial<PlayerPayload>>>(
+        "basketball-form-players",
+        () =>
+            Array.from(
+                { length: 4 },
+                () =>
+                    ({
+                        firstName: undefined,
+                        lastName: undefined,
+                        age: undefined,
+                    }) satisfies Partial<PlayerPayload>,
+            ),
+    );
+
+    const currentTransition = computed(() => Transitions[step.value]);
 
     const canGoNext = computed(() => currentTransition.value.next !== null);
     const canGoBack = computed(() => currentTransition.value.previous !== null);
 
-    const isStarted = computed(() => data.value.step === Step.START);
-    const isSummarized = computed(() => data.value.step === Step.SUMMARY);
-    const isSent = computed(() => data.value.step === Step.SENT);
+    const isStarted = computed(() => step.value === Step.START);
+    const isSummarized = computed(() => step.value === Step.SUMMARY);
+    const isSent = computed(() => step.value === Step.SENT);
     const isPending = useState<boolean>("basketball-form-pending", () => false);
 
-    const set = (step: Step | null) => {
-        if (step === null) {
+    const set = (value: Step | null) => {
+        if (value === null) {
             return;
         }
 
-        data.value.step = step;
+        step.value = value;
     };
 
     const reset = () => {
-        data.value = initData();
+        accepted.value = false;
     };
 
     const next = () => {
@@ -101,9 +93,12 @@ export default () => {
 
         isPending.value = true;
 
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        if (!category.value) {
+            return;
+        }
 
-        // await $fetch('/api/form', { method: 'POST', body: data.value });
+        const newTeam = await useTeams().create(category.value, team.value);
+        await usePlayers().create(newTeam, players.value);
 
         isPending.value = false;
 
@@ -111,9 +106,12 @@ export default () => {
     };
 
     return {
-        Category,
         Step,
-        data,
+        step,
+        accepted,
+        category,
+        team,
+        players,
         canGoNext,
         canGoBack,
         isStarted,

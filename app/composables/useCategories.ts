@@ -1,10 +1,10 @@
 export const useCategories = () => {
     const { token } = useRuntimeConfig();
-    const { data: categories } = useFetch("/api/categories", {
-        method: "GET",
+    const { data: categories } = useFetch<Array<Category>>("/api/categories", {
         headers: {
             Authorization: `Bearer ${token}`,
         },
+        method: "GET",
     });
 
     return {

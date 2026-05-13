@@ -1,22 +1,22 @@
 <script lang="js" setup>
-const { data } = useForm();
+const { step, players } = useForm();
 </script>
 
 <template>
     <section class="flex w-full flex-col">
         <h2 class="text-center">
-            <span>{{ data.step }}/3</span>
+            <span>{{ step }}/3</span>
             {{ $t(`pages.index.content.players.title`) }}
         </h2>
 
         <fieldset
-            v-for="(player, index) in data.team.players"
+            v-for="(player, index) in players"
             :key="index"
             class="grid w-full grid-flow-row gap-3 pt-2"
         >
             <label :for="`player-${index}`">
                 {{ $t(`components.input.player.label`) }}
-                <template v-if="index !== data.team.players.length - 1">
+                <template v-if="index !== players.length - 1">
                     {{ index + 1 }}
                 </template>
                 <template v-else>

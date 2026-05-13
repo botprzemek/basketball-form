@@ -3,9 +3,9 @@ export default defineEventHandler(async (event) => {
         return;
     }
 
-    // if (import.meta.dev) {
-    //     return;
-    // }
+    if (import.meta.dev) {
+        return;
+    }
 
     const { token } = useRuntimeConfig();
 

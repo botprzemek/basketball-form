@@ -12,13 +12,8 @@ useHead({
 useSeoMeta({
     ogImage: "og-image.jpg",
 });
-
-const { categories } = useCategories();
 </script>
 
 <template>
-    <!-- <NuxtPage /> -->
-    <div>
-        {{ categories }}
-    </div>
+    <NuxtPage />
 </template>

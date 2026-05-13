@@ -5,14 +5,16 @@ export default defineEventHandler(async (event) => {
         return;
     }
 
-    const body = await readBody(event);
+    const body = await readBody<Array<PlayerPayload>>(event);
 
     const [result] = await database
         .insert(players)
-        .values({
-            ...body,
-            teamId,
-        })
+        .values(
+            body.map((player) => ({
+                ...player,
+                teamId,
+            })),
+        )
         .returning();
 
     return result;

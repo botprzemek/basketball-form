@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { Step, data, submit } = useForm();
+const { Step, step, submit } = useForm();
 const components = {
     [Step.START]: resolveComponent("FormStart"),
     [Step.TEAM]: resolveComponent("FormTeam"),
@@ -8,7 +8,7 @@ const components = {
     [Step.SENT]: resolveComponent("FormSent"),
 } as const;
 
-const currentStep = computed(() => components[data.value.step ?? Step.START]);
+const currentStep = computed(() => components[step.value ?? Step.START]);
 </script>
 
 <template>
@@ -18,7 +18,7 @@ const currentStep = computed(() => components[data.value.step ?? Step.START]);
             class="flex w-full flex-col items-center justify-stretch gap-3"
         >
             <Transition name="fade-slide" mode="out-in">
-                <component :is="currentStep" :key="data.step" />
+                <component :is="currentStep" :key="step" />
             </Transition>
 
             <FormControls />

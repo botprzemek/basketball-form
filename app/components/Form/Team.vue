@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const { data } = useForm();
+const { step, team } = useForm();
 </script>
 
 <template>
     <section>
         <h2 class="text-center">
-            <span>{{ data.step }}/3</span>
+            <span>{{ step }}/3</span>
             {{ $t(`pages.index.content.team.title`) }}
         </h2>
 
@@ -21,29 +21,29 @@ const { data } = useForm();
             </template>
             <template #amateur1>
                 <TextImportant>
-                    {{ $t(`components.select.category.1`) }}
-                </TextImportant>
-            </template>
-            <template #pro1>
-                <TextImportant>
-                    {{ $t(`components.select.category.2`) }}
+                    {{ $t(`components.select.category.amateur`) }}
                 </TextImportant>
             </template>
             <template #amateur2>
                 <TextImportant>
-                    {{ $t(`components.select.category.1`) }}
+                    {{ $t(`components.select.category.amateur`) }}
+                </TextImportant>
+            </template>
+            <template #pro1>
+                <TextImportant>
+                    {{ $t(`components.select.category.pro`) }}
                 </TextImportant>
             </template>
             <template #pro2>
                 <TextImportant>
-                    {{ $t(`components.select.category.2`) }}
+                    {{ $t(`components.select.category.pro`) }}
                 </TextImportant>
             </template>
         </i18n-t>
 
         <fieldset class="flex w-full flex-col gap-3">
             <InputBase
-                v-model="data.team.name"
+                v-model="team.name"
                 :placeholder="$t(`components.input.team.name`)"
                 autocomplete="username"
                 name="username"
@@ -53,13 +53,13 @@ const { data } = useForm();
             {{ $t(`requirements.field`) }}
         </TextImportant> -->
 
-            <SelectCategory />
+            <BasketballCategorySelector />
             <!-- <TextImportant v-if="errors.team.category" class="text-sm">
             {{ $t(`requirements.category`) }}
         </TextImportant> -->
 
             <InputBase
-                v-model="data.team.email"
+                v-model="team.email"
                 :placeholder="$t(`components.input.team.email`)"
                 autocomplete="email"
                 name="email"
@@ -70,11 +70,22 @@ const { data } = useForm();
         </TextImportant> -->
 
             <InputBase
-                v-model="data.team.phone"
+                v-model="team.phone"
                 :placeholder="$t(`components.input.team.phone`)"
                 autocomplete="tel"
                 name="tel"
                 type="tel"
+            />
+            <!-- <TextImportant v-if="errors.team.phone" class="text-sm">
+            {{ $t(`requirements.phone`) }}
+        </TextImportant> -->
+
+            <InputBase
+                v-model="team.city"
+                :placeholder="$t(`components.input.team.city`)"
+                autocomplete="city"
+                name="city"
+                type="text"
             />
             <!-- <TextImportant v-if="errors.team.phone" class="text-sm">
             {{ $t(`requirements.phone`) }}

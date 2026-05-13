@@ -1,19 +1,23 @@
 interface Category {
     id: string;
     name: string;
+    teamsLimit: number;
+    teamsCount: number;
+    teamsRemaining: number;
+    isFull: boolean;
     createdAt: Date;
-    updatedAt?: Date | null;
+    updatedAt: Date | null;
 }
 
 interface Team {
     id: string;
-    name: string;
     categoryId: number;
+    name: string;
     email: string;
     phone: string;
+    city: string;
     createdAt: Date;
-    verifiedAt?: Date | null;
-    updatedAt?: Date | null;
+    updatedAt: Date | null;
 }
 
 interface Player {
@@ -23,19 +27,14 @@ interface Player {
     lastName: string;
     age: number;
     createdAt: Date;
-    updatedAt: Date;
-}
-
-interface CategoryPayload {
-    name: string;
+    updatedAt: Date | null;
 }
 
 interface TeamPayload {
     name: string;
     email: string;
     phone: string;
-    createdAt: Date;
-    updatedAt?: Date | null;
+    city: string;
 }
 
 interface PlayerPayload {

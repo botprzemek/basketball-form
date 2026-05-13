@@ -1,11 +1,11 @@
 <script lang="js" setup>
-const { Step, data, set } = useForm();
+const { Step, step, accepted, category, team, players } = useForm();
 </script>
 
 <template>
     <section>
         <h2 class="text-center">
-            <span>{{ data.step }}/3</span>
+            <span>{{ step }}/3</span>
             {{ $t(`pages.index.content.summary.title`) }}
         </h2>
 
@@ -48,9 +48,9 @@ const { Step, data, set } = useForm();
                         class="text-crimson underline hover:cursor-pointer"
                     >
                         {{
-                            !data.team.name
+                            !team.name
                                 ? $t(`components.input.fill`)
-                                : `${data.team.name.substring(0, 7)}...`
+                                : `${team.name.substring(0, 7)}...`
                         }}
                     </span>
                 </p>
@@ -58,15 +58,15 @@ const { Step, data, set } = useForm();
             <li>
                 <p class="flex justify-between">
                     1.2
-                    {{ $t(`components.select.category.0`) }}
+                    {{ $t(`components.select.category.default`) }}
                     <span
                         @click="set(Step.TEAM)"
                         class="text-crimson underline hover:cursor-pointer"
                     >
                         {{
-                            !data.team.category
+                            !category
                                 ? $t(`components.input.fill`)
-                                : `${$t(`components.select.category.${data.team.category}`).substring(0, 7)}...`
+                                : `${$t(`components.select.category.${category.name}`).substring(0, 7)}...`
                         }}
                     </span>
                 </p>
@@ -80,9 +80,9 @@ const { Step, data, set } = useForm();
                         class="text-crimson underline hover:cursor-pointer"
                     >
                         {{
-                            !data.team.email
+                            !team.email
                                 ? $t(`components.input.fill`)
-                                : `${data.team.email.substring(0, 7)}...`
+                                : `${team.email.substring(0, 7)}...`
                         }}
                     </span>
                 </p>
@@ -96,9 +96,9 @@ const { Step, data, set } = useForm();
                         class="text-crimson underline hover:cursor-pointer"
                     >
                         {{
-                            !data.team.phone
+                            !team.phone
                                 ? $t(`components.input.fill`)
-                                : `${data.team.phone.substring(0, 7)}...`
+                                : `${team.phone.substring(0, 7)}...`
                         }}
                     </span>
                 </p>
@@ -110,7 +110,7 @@ const { Step, data, set } = useForm();
         </h3>
         <ul class="w-full">
             <li
-                v-for="(player, number) in data.team.players"
+                v-for="(player, number) in players"
                 :key="number"
                 class="flex justify-between"
             >
@@ -155,7 +155,7 @@ const { Step, data, set } = useForm();
         <fieldset class="flex w-full flex-col items-end justify-end gap-2">
             <section class="flex w-full items-center justify-end gap-2">
                 <input
-                    v-model="data.accepted"
+                    v-model="accepted"
                     type="checkbox"
                     name="accept"
                     required

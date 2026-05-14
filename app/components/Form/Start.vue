@@ -1,3 +1,8 @@
+<script setup lang="ts">
+const { accepted } = useForm();
+const { regulationsUrl } = useRuntimeConfig().public;
+</script>
+
 <template>
     <section class="flex flex-col items-center">
         <IconLogo width="200" height="200" />
@@ -11,12 +16,18 @@
             scope="global"
             class="text-justify"
         >
-            <template v-slot:regulations>
-                <TextLink to="/files/regulations.pdf" target="_blank" external>
+            <template #regulations>
+                <TextLink
+                    @click="accepted = true"
+                    :to="regulationsUrl"
+                    target="_blank"
+                    external
+                    class="hover:cursor-pointer"
+                >
                     {{ $t(`pages.index.content.start.regulations`) }}
                 </TextLink>
             </template>
-            <template v-slot:about>
+            <template #about>
                 <TextLink to="about">
                     {{ $t(`pages.index.content.start.about`) }}
                 </TextLink>

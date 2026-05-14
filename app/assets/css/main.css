@@ -24,7 +24,9 @@
     }
 
     main {
-        @apply flex w-[100dvw] flex-col items-center gap-3 overflow-x-hidden px-3 pt-6 pb-24 sm:w-[36rem] md:w-[42rem];
+        @apply flex w-dvw flex-col items-center gap-3 overflow-x-hidden px-3 pt-6 pb-24;
+        @apply sm:w-xl;
+        @apply md:w-2xl;
     }
 
     h1,
@@ -69,4 +71,25 @@
 
 .page-enter-from {
     transform: translateY(-1.5rem);
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: all 0.2s ease;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateX(-0.5rem);
+}
+
+.drawer-enter-active,
+.drawer-leave-active {
+    transition: transform 0.15s ease;
+}
+
+.drawer-enter-from,
+.drawer-leave-to {
+    transform: translateY(-100%);
 }

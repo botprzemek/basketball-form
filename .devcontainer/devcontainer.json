@@ -6,10 +6,10 @@
         "compose.yaml"
     ],
     "service": "devcontainer",
-    "runServices": ["database", "devcontainer", "proxy"],
+    "runServices": ["database", "devcontainer"],
     "workspaceFolder": "/workspace/basketball-form",
     "features": {
-        "ghcr.io/devcontainers/features/node:1": {}
+        "ghcr.io/devcontainers/features/node:2.0.0": {}
     },
     "postCreateCommand": "npm install && git config --global sequence.editor \"code --wait\"",
     "forwardPorts": [3000],

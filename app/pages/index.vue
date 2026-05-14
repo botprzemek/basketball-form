@@ -25,20 +25,3 @@ const currentStep = computed(() => components[step.value ?? Step.START]);
         </form>
     </main>
 </template>
-
-<style scoped>
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-    transition: all 0.2s ease;
-}
-
-.fade-slide-enter-from {
-    opacity: 0;
-    transform: translateX(0.5rem);
-}
-
-.fade-slide-leave-to {
-    opacity: 0;
-    transform: translateX(-0.5rem);
-}
-</style>

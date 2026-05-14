@@ -23,13 +23,21 @@ const form = useForm();
                 !form.isSummarized.value
             "
         >
-            <ButtonBase @click="form.next" type="button">
+            <ButtonBase
+                @click="form.next"
+                type="button"
+                :disabled="!form.isStepValid.value"
+            >
                 {{ $t("components.button.next") }}
             </ButtonBase>
         </template>
 
         <template v-if="form.isSummarized.value">
-            <ButtonBase type="submit" @submit.prevent>
+            <ButtonBase
+                type="submit"
+                :disabled="!form.accepted.value"
+                @submit.prevent
+            >
                 {{ $t("components.button.submit") }}
             </ButtonBase>
         </template>

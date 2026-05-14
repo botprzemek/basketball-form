@@ -1,5 +1,6 @@
-<script lang="js" setup>
-const { Step, step, accepted, category, team, players } = useForm();
+<script setup lang="ts">
+const { Step, step, accepted, category, team, players, set } = useForm();
+const { regulationsUrl } = useRuntimeConfig().public;
 </script>
 
 <template>
@@ -41,7 +42,7 @@ const { Step, step, accepted, category, team, players } = useForm();
         <ul class="w-full">
             <li>
                 <p class="flex justify-between">
-                    1.1
+                    1.1.
                     {{ $t(`components.input.team.name`) }}
                     <span
                         @click="set(Step.TEAM)"
@@ -57,7 +58,7 @@ const { Step, step, accepted, category, team, players } = useForm();
             </li>
             <li>
                 <p class="flex justify-between">
-                    1.2
+                    1.2.
                     {{ $t(`components.select.category.default`) }}
                     <span
                         @click="set(Step.TEAM)"
@@ -73,7 +74,7 @@ const { Step, step, accepted, category, team, players } = useForm();
             </li>
             <li>
                 <p class="flex justify-between">
-                    1.3
+                    1.3.
                     {{ $t(`components.input.team.email`) }}
                     <span
                         @click="set(Step.TEAM)"
@@ -89,7 +90,7 @@ const { Step, step, accepted, category, team, players } = useForm();
             </li>
             <li>
                 <p class="flex justify-between">
-                    1.4
+                    1.4.
                     {{ $t(`components.input.team.phone`) }}
                     <span
                         @click="set(Step.TEAM)"
@@ -122,7 +123,7 @@ const { Step, step, accepted, category, team, players } = useForm();
                         !player.age
                     "
                 >
-                    4. {{ $t(`pages.index.content.summary.bench`) }}
+                    2.4. {{ $t(`pages.index.content.summary.bench`) }}
                     <span
                         class="text-crimson underline hover:cursor-pointer"
                         @click="set(Step.PLAYERS)"
@@ -132,32 +133,33 @@ const { Step, step, accepted, category, team, players } = useForm();
                 </template>
 
                 <template v-else>
-                    {{ number + 1 }}.
-                    {{
-                        player.firstName ||
-                        $t(`components.input.player.firstName`)
-                    }},
-                    {{
-                        player.lastName ||
-                        $t(`components.input.player.lastName`)
-                    }},
-                    {{ player.age || $t(`components.input.player.age`) }}
+                    2.{{ number + 1 }}.
+                    {{ $t(`components.input.player.firstName`) }},
+                    {{ $t(`components.input.player.lastName`) }},
+                    {{ $t(`components.input.player.age`) }}
                     <span
                         class="text-crimson underline hover:cursor-pointer"
                         @click="set(Step.PLAYERS)"
                     >
-                        {{ $t(`components.input.fill`) }}
+                        {{ `${player.firstName?.substring(0, 7)}...` }}
                     </span>
                 </template>
             </li>
         </ul>
 
         <fieldset class="flex w-full flex-col items-end justify-end gap-2">
-            <section class="flex w-full items-center justify-end gap-2">
+            <TextLink
+                @click="accepted = true"
+                :to="regulationsUrl"
+                target="_blank"
+                external
+                class="flex w-full items-center justify-end gap-2 hover:cursor-pointer"
+            >
                 <input
                     v-model="accepted"
                     type="checkbox"
                     name="accept"
+                    disabled
                     required
                     class="accent-crimson"
                 />
@@ -167,21 +169,15 @@ const { Step, step, accepted, category, team, players } = useForm();
                     scope="global"
                     class="text-right text-sm"
                 >
-                    <template v-slot:regulations>
-                        <TextLink to="files/regulamin" target="_blank" external>
-                            {{
-                                $t(`pages.index.content.start.regulations`)
-                                    .split(" ", 1)
-                                    .at(0)
-                            }}
-                        </TextLink>
+                    <template #regulations>
+                        {{
+                            $t(`pages.index.content.start.regulations`)
+                                .split(" ", 1)
+                                .at(0)
+                        }}
                     </template>
                 </i18n-t>
-            </section>
-
-            <!-- <TextImportant v-if="errors.accepted" class="text-right text-sm">
-            {{ $t(`requirements.regulations`) }}
-        </TextImportant> -->
+            </TextLink>
         </fieldset>
     </section>
 </template>

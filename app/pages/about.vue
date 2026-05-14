@@ -8,7 +8,7 @@ defineI18nRoute({
 
 <template>
     <main>
-        <NuxtLinkLocale to="/">
+        <NuxtLinkLocale to="index">
             <IconLogo width="200" height="200" />
         </NuxtLinkLocale>
 

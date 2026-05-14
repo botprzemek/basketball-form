@@ -3,7 +3,11 @@ definePageMeta({
     middleware: "auth",
 });
 
-const { data: teams, error } = await useFetch("/api/form");
+const { data: teams, error } = await useFetch("/api/admin/teams", {
+    headers: {
+        Authorization: `Bearer ${useRoute().query["token"]}`,
+    },
+});
 </script>
 
 <template>
@@ -35,8 +39,14 @@ const { data: teams, error } = await useFetch("/api/form");
                     </li>
                     <li>
                         <p>
+                            <strong>Miasto</strong>
+                            {{ team.city || "N/A" }}
+                        </p>
+                    </li>
+                    <li>
+                        <p>
                             <strong>Kategoria rozgrywek:</strong>
-                            {{ team.category || "N/A" }}
+                            {{ team.category?.name || "N/A" }}
                         </p>
                     </li>
                 </ul>
@@ -52,7 +62,7 @@ const { data: teams, error } = await useFetch("/api/form");
                         <p>
                             <strong>Imię i nazwisko:</strong>
                             {{ player.firstName || "—" }}
-                            {{ player.lastame || "—" }}
+                            {{ player.lastName || "—" }}
                         </p>
                         <p>
                             <strong>Wiek:</strong>

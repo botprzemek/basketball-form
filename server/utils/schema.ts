@@ -1,5 +1,6 @@
 import { defineRelations } from "drizzle-orm";
 import {
+    boolean,
     integer,
     pgSchema,
     primaryKey,
@@ -132,7 +133,7 @@ export const matches = schema.table("matches", {
     homeTeamId: uuid("home_team_id").references(() => teams.id),
     awayTeamId: uuid("away_team_id").references(() => teams.id),
     winningTeamId: uuid("winning_team_id").references(() => teams.id),
-    refereeId: uuid("referee_id").references(() => officials.id),
+    refereeId: uuid("referee_id").references(() => referees.id),
     status: text("status").default("scheduled"),
     homeScore: integer("home_score").default(0),
     awayScore: integer("away_score").default(0),
@@ -165,7 +166,7 @@ export const categoryLimits = schema
         teamsLimit: integer("teams_limit").notNull().default(0),
         teamsCount: integer("teams_count").notNull().default(0),
         teamsRemaining: integer("teams_remaining").notNull().default(0),
-        isFull: text("is_full"),
+        isFull: boolean("is_full"),
         createdAt: timestamp("created_at", { withTimezone: true })
             .notNull()
             .defaultNow(),

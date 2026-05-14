@@ -21,6 +21,6 @@ const {
         :placeholder="placeholder"
         :type="type"
         required
-        class="border-mid placeholder:text-mid focus:border-crimson focus:text-crimson focus:placeholder:text-crimson h-12 w-full border bg-transparent px-4 py-2 outline-none"
+        class="border-mid placeholder:text-mid focus:border-crimson focus:text-crimson focus:placeholder:text-crimson h-12 w-full border bg-transparent px-4 py-2 transition-colors duration-300 outline-none"
     />
 </template>

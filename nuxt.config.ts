@@ -18,6 +18,7 @@ export default defineNuxtConfig({
             author: "notbyte.com",
             name: "3X3",
             url: "https://3x3.notbyte.com/",
+            regulationsUrl: "",
         },
     },
 
@@ -36,16 +37,22 @@ export default defineNuxtConfig({
         },
     },
 
+    fonts: {
+        defaults: {
+            weights: [400, 600],
+        },
+    },
+
     css: ["./app/assets/css/main.css"],
     vite: {
         plugins: [tailwindcss()],
         server: {
             allowedHosts: ["basketball-form"],
-            hmr: {
-                protocol: "wss",
-                host: "3x3.notbyte.com",
-                port: 443,
-            },
+            // hmr: {
+            //     protocol: "wss",
+            //     host: "3x3.notbyte.com",
+            //     port: 443,
+            // },
         },
     },
 

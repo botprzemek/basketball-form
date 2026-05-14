@@ -35,6 +35,7 @@
             }
         },
         "select": {
+            "slots": "Miejsc",
             "category": {
                 "default": "Kategoria rozgrywek",
                 "amateur": "AMATOR",

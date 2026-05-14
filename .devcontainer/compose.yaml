@@ -1,54 +1,55 @@
 networks:
-  basketball:
-    name: basketball
-    driver: bridge
-    external: true
+    basketball:
+        name: basketball
+        driver: bridge
+        external: true
 
 services:
-  devcontainer:
-    image: mcr.microsoft.com/devcontainers/base:ubuntu
-    container_name: basketball-devcontainer
-    networks:
-      basketball:
-        aliases:
-          - form
-          - basketball-form
-    environment:
-      NUXT_APP_BASE_URL: "/"
-      NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/dev?sslmode=disable"
-      NUXT_TOKEN: "your-secret-token"
-    volumes:
-      - .:/workspace/basketball-form:cached
-    tty: true
-    stdin_open: true
-    command: /bin/bash
-  
-  migrate-database:
-    image: cockroachdb/cockroach:latest-v26.1
-    networks:
-      basketball:
-    volumes:
-      - ./migrate.sql:/cockroach/migrate.sql
-    command: sql --host basketball-database:26257 --insecure --database dev --file /cockroach/migrate.sql
-  
-  seed-database:
-    image: cockroachdb/cockroach:latest-v26.1
-    networks:
-      basketball:
-    volumes:
-      - ./seed.sql:/cockroach/seed.sql
-    command: sql --host basketball-database:26257 --insecure --database dev --file /cockroach/seed.sql
+    devcontainer:
+        image: mcr.microsoft.com/devcontainers/base:ubuntu
+        container_name: basketball-devcontainer
+        networks:
+            basketball:
+                aliases:
+                    - form
+                    - basketball-form
+        environment:
+            NUXT_APP_BASE_URL: "/"
+            NUXT_REGULATIONS_URL: "/"
+            NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/dev?sslmode=disable"
+            NUXT_TOKEN: "your-secret-token"
+        volumes:
+            - .:/workspace/basketball-form:cached
+        tty: true
+        stdin_open: true
+        command: /bin/bash
 
-  proxy:
-    image: nginx:latest
-    ports:
-      - "0.0.0.0:80:80"
-      - "0.0.0.0:443:443"
-    networks:
-      basketball:
-    volumes:
-      - /etc/ssl:/etc/ssl
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    migrate-database:
+        image: cockroachdb/cockroach:latest-v26.1
+        networks:
+            basketball:
+        volumes:
+            - ./migrate.sql:/cockroach/migrate.sql
+        command: sql --host basketball-database:26257 --insecure --database dev --file /cockroach/migrate.sql
 
-  form:
-      profiles: ["donotstart"]
+    seed-database:
+        image: cockroachdb/cockroach:latest-v26.1
+        networks:
+            basketball:
+        volumes:
+            - ./seed.sql:/cockroach/seed.sql
+        command: sql --host basketball-database:26257 --insecure --database dev --file /cockroach/seed.sql
+
+    proxy:
+        image: nginx:latest
+        ports:
+            - "0.0.0.0:80:80"
+            - "0.0.0.0:443:443"
+        networks:
+            basketball:
+        volumes:
+            - /etc/ssl:/etc/ssl
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf
+
+    form:
+        profiles: ["donotstart"]

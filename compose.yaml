@@ -1,38 +1,39 @@
 networks:
-  basketball:
-    name: basketball
-    driver: bridge
+    basketball:
+        name: basketball
+        driver: bridge
 
 volumes:
-  database:
-    name: basketball-database
+    database:
+        name: basketball-database
 
 services:
-  database:
-    image: cockroachdb/cockroach:latest-v26.1
-    container_name: basketball-database
-    networks:
-      basketball:
-    volumes:
-      - database:/cockroach/cockroach-data
-    command: start-single-node --advertise-addr basketball-database:26257 --insecure
+    database:
+        image: cockroachdb/cockroach:latest-v26.1
+        container_name: basketball-database
+        networks:
+            basketball:
+        volumes:
+            - database:/cockroach/cockroach-data
+        command: start-single-node --advertise-addr basketball-database:26257 --insecure
 
-  init-database:
-    image: cockroachdb/cockroach:latest-v26.1
-    networks:
-      basketball:
-    command: init --host basketball-database:26257 --insecure
+    init-database:
+        image: cockroachdb/cockroach:latest-v26.1
+        networks:
+            basketball:
+        command: init --host basketball-database:26257 --insecure
 
-  form:
-    image: basketball-form:latest
-    build: .
-    container_name: basketball-form
-    environment:
-      NUXT_APP_BASE_URL: "/"
-      NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/prod?sslmode=disable"
-      NUXT_TOKEN: "your-secret-token"
-    networks:
-      basketball:
-    depends_on:
-      database:
-        condition: service_started
+    form:
+        image: basketball-form:latest
+        build: .
+        container_name: basketball-form
+        environment:
+            NUXT_APP_BASE_URL: "/"
+            NUXT_REGULATIONS_URL: "/"
+            NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/prod?sslmode=disable"
+            NUXT_TOKEN: "your-secret-token"
+        networks:
+            basketball:
+        depends_on:
+            database:
+                condition: service_started

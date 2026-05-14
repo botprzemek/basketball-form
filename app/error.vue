@@ -5,9 +5,7 @@ const { error } = defineProps({
     error: Object as () => NuxtError,
 });
 
-const page = `${error?.statusCode || 500}`;
-
-useSiteData().set(page);
+const page = `${error?.status || 500}`;
 </script>
 
 <template>
@@ -24,7 +22,7 @@ useSiteData().set(page);
                 scope="global"
                 class="text-justify"
             >
-                <template v-slot:messenger>
+                <template #messenger>
                     <TextLink
                         external
                         target="_blank"
@@ -33,7 +31,7 @@ useSiteData().set(page);
                         {{ $t(`pages.index.content.summary.messenger`) }}
                     </TextLink>
                 </template>
-                <template v-slot:instagram>
+                <template #instagram>
                     <TextLink
                         external
                         target="_blank"

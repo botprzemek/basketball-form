@@ -1417,6 +1417,6 @@ INSERT INTO basketball.cities (district_id, territorial_id, name, area, populati
 ON CONFLICT (territorial_id) DO NOTHING;
 
 INSERT INTO basketball.categories (name, teams_limit) VALUES 
-    ('amateur', 16), 
-    ('pro', 16)
+    ('amateur', 12), 
+    ('pro', 12)
 ON CONFLICT DO NOTHING;

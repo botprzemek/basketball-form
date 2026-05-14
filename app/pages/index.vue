@@ -15,7 +15,7 @@ const currentStep = computed(() => components[step.value ?? Step.START]);
     <main>
         <form
             @submit.prevent="submit"
-            class="flex w-full flex-col items-center justify-stretch gap-3"
+            class="mb-80 flex w-full flex-col items-center justify-stretch gap-3"
         >
             <Transition name="fade-slide" mode="out-in">
                 <component :is="currentStep" :key="step" />

@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
     const body = await readBody<Array<PlayerPayload>>(event);
 
-    const [result] = await database
+    const results = await database
         .insert(players)
         .values(
             body.map((player) => ({
@@ -17,5 +17,5 @@ export default defineEventHandler(async (event) => {
         )
         .returning();
 
-    return result;
+    return results;
 });

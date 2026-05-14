@@ -6,7 +6,7 @@
         "compose.yaml"
     ],
     "service": "devcontainer",
-    "runServices": ["database", "devcontainer"],
+    "runServices": ["database", "devcontainer", "proxy"],
     "workspaceFolder": "/workspace/basketball-form",
     "features": {
         "ghcr.io/devcontainers/features/node:1": {}

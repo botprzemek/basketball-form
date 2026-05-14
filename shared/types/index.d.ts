@@ -42,3 +42,9 @@ interface PlayerPayload {
     lastName: string;
     age: number;
 }
+
+interface FormPayload {
+    category: Category;
+    team: TeamPayload;
+    players: Array<PlayerPayload>;
+}

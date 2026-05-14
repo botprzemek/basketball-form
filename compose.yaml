@@ -21,9 +21,6 @@ services:
     image: cockroachdb/cockroach:latest-v26.1
     networks:
       basketball:
-    depends_on:
-      database:
-        condition: service_healthy
     command: init --host basketball-database:26257 --insecure
 
   form:

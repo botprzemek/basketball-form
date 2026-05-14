@@ -12,6 +12,7 @@ services:
       basketball:
         aliases:
           - form
+          - basketball-form
     environment:
       NUXT_APP_BASE_URL: "/"
       NUXT_DATABASE_URL: "postgres://root@basketball-database:26257/dev?sslmode=disable"
@@ -38,6 +39,16 @@ services:
       - ./seed.sql:/cockroach/seed.sql
     command: sql --host basketball-database:26257 --insecure --database dev --file /cockroach/seed.sql
 
+  proxy:
+    image: nginx:latest
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    networks:
+      basketball:
+    volumes:
+      - /etc/ssl:/etc/ssl
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
 
   form:
       profiles: ["donotstart"]

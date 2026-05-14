@@ -1,4 +1,5 @@
 # Nuxt dev outputs
+.output
 .data
 .nuxt
 .nitro

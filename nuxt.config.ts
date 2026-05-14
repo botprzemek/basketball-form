@@ -39,6 +39,14 @@ export default defineNuxtConfig({
     css: ["./app/assets/css/main.css"],
     vite: {
         plugins: [tailwindcss()],
+        server: {
+            allowedHosts: ["basketball-form"],
+            hmr: {
+                protocol: "wss",
+                host: "3x3.notbyte.com",
+                port: 443,
+            },
+        },
     },
 
     ogImage: { enabled: false },

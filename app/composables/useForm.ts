@@ -68,6 +68,8 @@ export default () => {
 
     const reset = () => {
         accepted.value = false;
+
+        set(Step.START);
     };
 
     const next = () => {
@@ -97,8 +99,14 @@ export default () => {
             return;
         }
 
-        const newTeam = await useTeams().create(category.value, team.value);
-        await usePlayers().create(newTeam, players.value);
+        await $fetch(`/api/form`, {
+            method: "POST",
+            body: {
+                category: category.value,
+                team: team.value,
+                players: players.value,
+            },
+        });
 
         isPending.value = false;
 

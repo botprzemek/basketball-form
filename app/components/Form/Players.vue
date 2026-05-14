@@ -25,7 +25,7 @@ const { step, players } = useForm();
             </label>
 
             <InputBase
-                v-model="player.first_name"
+                v-model="player.firstName"
                 autocomplete="given-name"
                 name="given-name"
                 :id="`player-${index}`"
@@ -36,7 +36,7 @@ const { step, players } = useForm();
         </TextImportant> -->
 
             <InputBase
-                v-model="player.last_name"
+                v-model="player.lastName"
                 autocomplete="family-name"
                 name="family-name"
                 :placeholder="$t(`components.input.player.lastName`)"
